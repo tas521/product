@@ -1,0 +1,261 @@
+{
+  "entities": {
+    "user": {
+      "title": "User",
+      "description": "Admin and staff users for Al Safar Travel Agency.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["super_admin", "staff_admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "package": {
+      "title": "Package",
+      "description": "Travel and pilgrimage package details.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "currency": { "type": "string" },
+        "durationDays": { "type": "number" },
+        "destination": { "type": "string" },
+        "inclusions": { "type": "array" },
+        "exclusions": { "type": "array" },
+        "itinerary": { "type": "array" },
+        "imageUrl": { "type": "string" },
+        "galleryUrls": { "type": "array" },
+        "available": { "type": "boolean" },
+        "category": { "type": "string", "enum": ["domestic", "international", "hajj", "umrah", "visa"] },
+        "featured": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "price", "durationDays", "available", "category"]
+    },
+    "booking": {
+      "title": "Booking",
+      "description": "Tour package bookings reservation and itinerary routing.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "referenceNumber": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerEmail": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "packageId": { "type": "string" },
+        "packageName": { "type": "string" },
+        "numPax": { "type": "number" },
+        "travelDate": { "type": "string", "format": "date" },
+        "status": { "type": "string", "enum": ["new", "pending", "confirmed", "completed", "cancelled"] },
+        "notes": { "type": "string" },
+        "totalPrice": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "referenceNumber", "customerName", "customerEmail", "packageId", "numPax", "travelDate", "status"]
+    },
+    "customer": {
+      "title": "Customer",
+      "description": "Customer Profile and historical activity tracking.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "notes": { "type": "string" },
+        "bookingHistory": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "email"]
+    },
+    "order": {
+      "title": "Order",
+      "description": "Orders, ledger lines, and financial transactions.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "bookingId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "packageName": { "type": "string" },
+        "amount": { "type": "number" },
+        "currency": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "completed", "cancelled"] },
+        "paymentMethod": { "type": "string" },
+        "transactionId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "bookingId", "customerName", "amount", "status"]
+    },
+    "inquiry": {
+      "title": "Inquiry",
+      "description": "Inbound queries from online forms and callback desks.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["contact_form", "package_inquiry", "callback"] },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "message": { "type": "string" },
+        "packageId": { "type": "string" },
+        "packageName": { "type": "string" },
+        "status": { "type": "string", "enum": ["new", "replied", "archived"] },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "type", "name", "email", "status"]
+    },
+    "review": {
+      "title": "Review",
+      "description": "Customer reviews and visual testimonials rating validations.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "packageId": { "type": "string" },
+        "packageName": { "type": "string" },
+        "customerName": { "type": "string" },
+        "rating": { "type": "number" },
+        "comment": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "featured": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "customerName", "rating", "status"]
+    },
+    "gallery": {
+      "title": "GalleryItem",
+      "description": "Featured religious photography and tour gallery catalogs.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "featured": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "imageUrl", "title", "category"]
+    },
+    "blog_post": {
+      "title": "BlogPost",
+      "description": "Editorial and scholarly preparation articles.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "content": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "category": { "type": "string" },
+        "author": { "type": "string" },
+        "publishedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "content", "publishedAt"]
+    },
+    "testimonial": {
+      "title": "Testimonial",
+      "description": "VIP pilgrims or general travellers endorsements.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "author": { "type": "string" },
+        "role": { "type": "string" },
+        "text": { "type": "string" },
+        "image": { "type": "string" },
+        "rating": { "type": "number" },
+        "featured": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "author", "text", "featured"]
+    },
+    "notification": {
+      "title": "Notification",
+      "description": "System-wide admin logs, alerts and active notifications.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["booking", "inquiry", "payment"] },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "read": { "type": "boolean" },
+        "referenceId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "type", "title", "message", "read"]
+    },
+    "settings": {
+      "title": "AgencySettings",
+      "description": "Meta-variables, company contact details and operational constants.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyName": { "type": "string" },
+        "address": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "whatsapp": { "type": "string" },
+        "socialFacebook": { "type": "string" },
+        "socialInstagram": { "type": "string" },
+        "socialTwitter": { "type": "string" },
+        "smtpServer": { "type": "string" }
+      },
+      "required": ["id", "companyName", "email", "phone"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "user",
+      "description": "Admin Users and authorization credentials index."
+    },
+    "/packages/{packageId}": {
+      "schema": "package",
+      "description": "Active Tour packages list."
+    },
+    "/bookings/{bookingId}": {
+      "schema": "booking",
+      "description": "Client travel, VIP services and itinerary bookings ledger."
+    },
+    "/customers/{customerId}": {
+      "schema": "customer",
+      "description": "Verified traveller profiles index."
+    },
+    "/orders/{orderId}": {
+      "schema": "order",
+      "description": "Invoice billing and ledger transactions records."
+    },
+    "/inquiries/{inquiryId}": {
+      "schema": "inquiry",
+      "description": "Real-time inbound requests and hotline inquiries."
+    },
+    "/reviews/{reviewId}": {
+      "schema": "review",
+      "description": "Public content reviews and approval requests."
+    },
+    "/gallery/{galleryId}": {
+      "schema": "gallery",
+      "description": "Visual tour and pilgrim congregations gallery files asset metadata."
+    },
+    "/blog_posts/{postId}": {
+      "schema": "blog_post",
+      "description": "Published articles and preparation instructions files index."
+    },
+    "/testimonials/{testimonialId}": {
+      "schema": "testimonial",
+      "description": "Direct pilgrimage experiences quotes collection."
+    },
+    "/notifications/{notificationId}": {
+      "schema": "notification",
+      "description": "Admin real-time notification warnings stream."
+    },
+    "/settings/{settingsId}": {
+      "schema": "settings",
+      "description": "Platform meta details."
+    }
+  }
+}

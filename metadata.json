@@ -1,0 +1,6 @@
+{
+  "name": "Al Safar Tour & Travel",
+  "description": "Premium modern minimal travel website specializing in Hajj, Umrah, and luxury international tours with a booking system.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

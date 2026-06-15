@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-display: "Cinzel", "Playfair Display", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Theme colors override for "Bold Typography" design theme */
+  --color-slate-950: #09121f;
+  --color-slate-900: #10223b; /* Bold Typography core navy color */
+  --color-slate-850: #162E52;
+  --color-slate-800: #1B365D;
+  --color-slate-700: #2C4A75;
+  --color-slate-600: #3E5E8C;
+  --color-slate-500: #5577A6;
+  --color-slate-400: #72A0C1; /* Accent blue */
+  --color-slate-300: #9cbcd6;
+  --color-slate-200: #c2d5e5;
+  --color-slate-100: #e2ebf4;
+  --color-slate-50: #f5f8fb;
+
+  --color-amber-50: #FAF8F5; /* Extremely light pristine cream gold */
+  --color-amber-100: #F1E6C9; /* Soft light gold highlight */
+  --color-amber-200: #E2CE95; /* Warm elegant gold border */
+  --color-amber-300: #D0B05F; /* Smooth premium gold accent */
+  --color-amber-400: #BD9542; /* Classic Kiswah gold embroidery tint */
+  --color-amber-500: #A37920; /* Solid luxury gold highlight */
+  --color-amber-600: #856114; /* Deep rich golden brass */
+  --color-amber-700: #6B4E0E; /* Premium dark gold text for high readability */
+  --color-amber-800: #513B0B; /* Elegant deep dark antique gold */
+  --color-amber-900: #342505; /* Deepest golden-charcoal shadow */
+}
+
+@layer base {
+  body {
+    background-color: #FAF8F5; /* Warmer, cleaner premium background */
+    color: #10223b;
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Elegant scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F3ECE0;
+}
+::-webkit-scrollbar-thumb {
+  background: #C4B097;
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A38F75;
+}
+
+/* Exclusive high-luxury styling helpers */
+.luxury-box {
+  border: 1px solid rgba(163, 121, 32, 0.2);
+  outline: 4px solid transparent;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.luxury-box:hover {
+  border-color: rgba(163, 121, 32, 0.5);
+  outline: 1px solid rgba(163, 121, 32, 0.3);
+  outline-offset: 4px;
+}
+
+.gold-foil-text {
+  background: linear-gradient(135deg, #BD9542 0%, #A37920 50%, #856114 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #FAF8F5 0%, #F5EFEB 100%);
+}
+
+.luxury-card-overlay {
+  background: linear-gradient(180deg, rgba(16, 34, 59, 0) 40%, rgba(16, 34, 59, 0.95) 100%);
+}
+
+.fine-double-border {
+  border: 1px solid rgba(163, 121, 32, 0.25);
+  padding: 3px;
+  background-clip: content-box;
+}
+
+/* Islamic arabesque outline simulation background in navy theme */
+.islamic-pattern {
+  position: relative;
+}
+.islamic-pattern::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0l40 40-40 40L0 40z' fill='none' stroke='%23A37920' stroke-width='0.3' stroke-opacity='0.08'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Custom design animation for content items fade in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
