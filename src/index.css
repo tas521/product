@@ -161,29 +161,157 @@ html.dark .bg-white {
 
 /* Cards, cards text, and general white blocks */
 html.dark .bg-\[\#FAF8F5\] {
-  background-color: #09121f !important;
+  background-color: #0c1a2d !important;
 }
 
 html.dark .bg-\[\#F5F2ED\] {
-  background-color: #09121f !important;
+  background-color: #0c1a2d !important;
 }
 
-html.dark .text-\[\#10223b\],
-html.dark .text-\[\#1B365D\] {
-  color: #e2e8f0 !important;
+/* Luxury card containers */
+html.dark .luxury-box {
+  background-color: #10223b !important;
+  border-color: rgba(163, 121, 32, 0.25) !important;
 }
 
-html.dark .text-slate-600,
-html.dark .text-slate-700,
-html.dark .text-slate-800 {
-  color: #cbd5e1 !important;
+html.dark .luxury-box:hover {
+  border-color: rgba(251, 191, 36, 0.5) !important;
+}
+
+/* Universal text color fixes with high-contrast rules */
+html.dark .text-\[\#10223b\] { color: #f1f5f9 !important; }
+html.dark .text-\[\#10223b\]\/95 { color: rgba(241, 245, 249, 0.95) !important; }
+html.dark .text-\[\#10223b\]\/90 { color: rgba(241, 245, 249, 0.9) !important; }
+html.dark .text-\[\#10223b\]\/85 { color: rgba(241, 245, 249, 0.85) !important; }
+html.dark .text-\[\#10223b\]\/80 { color: rgba(241, 245, 249, 0.8) !important; }
+html.dark .text-\[\#10223b\]\/75 { color: rgba(241, 245, 249, 0.75) !important; }
+html.dark .text-\[\#10223b\]\/70 { color: rgba(241, 245, 249, 0.7) !important; }
+html.dark .text-\[\#10223b\]\/65 { color: rgba(241, 245, 249, 0.65) !important; }
+html.dark .text-\[\#10223b\]\/60 { color: rgba(241, 245, 249, 0.6) !important; }
+html.dark .text-\[\#10223b\]\/50 { color: rgba(241, 245, 249, 0.5) !important; }
+html.dark .text-\[\#10223b\]\/40 { color: rgba(241, 245, 249, 0.4) !important; }
+
+html.dark .text-\[\#1B365D\] { color: #f1f5f9 !important; }
+html.dark .text-\[\#1B365D\]\/95 { color: rgba(241, 245, 249, 0.95) !important; }
+html.dark .text-\[\#1B365D\]\/90 { color: rgba(241, 245, 249, 0.9) !important; }
+html.dark .text-\[\#1B365D\]\/85 { color: rgba(241, 245, 249, 0.85) !important; }
+html.dark .text-\[\#1B365D\]\/80 { color: rgba(241, 245, 249, 0.8) !important; }
+html.dark .text-\[\#1B365D\]\/75 { color: rgba(241, 245, 249, 0.75) !important; }
+html.dark .text-\[\#1B365D\]\/70 { color: rgba(241, 245, 249, 0.7) !important; }
+html.dark .text-\[\#1B365D\]\/65 { color: rgba(241, 245, 249, 0.65) !important; }
+html.dark .text-\[\#1B365D\]\/60 { color: rgba(241, 245, 249, 0.6) !important; }
+html.dark .text-\[\#1B365D\]\/50 { color: rgba(241, 245, 249, 0.5) !important; }
+html.dark .text-\[\#1B365D\]\/40 { color: rgba(241, 245, 249, 0.4) !important; }
+
+/* Catch-alls for other inline hashed blue/navy and slate text colors used in files */
+html.dark [class*="text-[#10223b]"] { color: #f1f5f9 !important; }
+html.dark [class*="text-[#1B365D]"] { color: #f1f5f9 !important; }
+html.dark [class*="text-[#"] { color: rgba(241, 245, 249, 0.9); }
+html.dark [class*="text-[#"].text-amber-500, html.dark [class*="text-[#"].text-amber-600, html.dark [class*="text-[#"].text-amber-700 { color: #fbbf24 !important; }
+
+html.dark .text-slate-950 { color: #f8fafc !important; }
+html.dark .text-slate-900 { color: #f1f5f9 !important; }
+html.dark .text-slate-800 { color: #e2e8f0 !important; }
+html.dark .text-slate-700 { color: #cbd5e1 !important; }
+html.dark .text-slate-600 { color: #cbd5e1 !important; }
+html.dark .text-slate-500 { color: #94a3b8 !important; }
+html.dark .text-slate-400 { color: #cbd5e1 !important; }
+
+html.dark [class*="text-slate-950"] { color: #f8fafc !important; }
+html.dark [class*="text-slate-900"] { color: #f1f5f9 !important; }
+html.dark [class*="text-slate-800"] { color: #e2e8f0 !important; }
+html.dark [class*="text-slate-700"] { color: #cbd5e1 !important; }
+html.dark [class*="text-slate-600"] { color: #cbd5e1 !important; }
+html.dark [class*="text-slate-500"] { color: #94a3b8 !important; }
+html.dark [class*="text-slate-400"] { color: #cbd5e1 !important; }
+
+/* Backgrounds mapping & opacity fixes */
+html.dark .bg-slate-50,
+html.dark [class*="bg-slate-50"] {
+  background-color: #0b1524 !important;
+}
+
+html.dark .bg-slate-100,
+html.dark [class*="bg-slate-100"] {
+  background-color: #10223b !important;
+}
+
+html.dark .bg-\[\#FAF8F5\]\/20,
+html.dark [class*="bg-[#FAF8F5]"] {
+  background-color: rgba(13, 30, 54, 0.45) !important;
+}
+html.dark .bg-\[\#F3ECE0\]\/20,
+html.dark [class*="bg-[#F3ECE0]"] {
+  background-color: rgba(13, 30, 54, 0.45) !important;
+}
+html.dark .bg-\[\#EAE6DF\]\/30,
+html.dark [class*="bg-[#EAE6DF]"] {
+  background-color: rgba(13, 30, 54, 0.45) !important;
 }
 
 html.dark .border-slate-200,
 html.dark .border-slate-250\/90,
 html.dark .border-\[\#1B365D\]\/10,
-html.dark .border-slate-300 {
+html.dark .border-slate-300,
+html.dark [class*="border-slate-"] {
   border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Modals overlays backgrounds */
+html.dark .bg-\[\#FAF8F5\],
+html.dark .bg-\[\#F5F2ED\] {
+  background-color: #10223b !important;
+}
+
+/* Specific button overrides */
+html.dark button.bg-white {
+  background-color: #0d1e36 !important;
+  color: #ffffff !important;
+  border-color: rgba(251, 191, 36, 0.3) !important;
+}
+
+html.dark button.bg-white:hover {
+  background-color: #10223b !important;
+  color: #fbbf24 !important;
+}
+
+/* Input, select, textarea styling */
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #09121f !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Notification, status, and alert states override */
+html.dark .bg-rose-50 {
+  background-color: rgba(244, 63, 94, 0.15) !important;
+  color: #fda4af !important;
+  border-color: rgba(244, 63, 94, 0.3) !important;
+}
+html.dark .text-rose-700 {
+  color: #fda4af !important;
+}
+
+html.dark .bg-emerald-50 {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  color: #e2f9f0 !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+html.dark .text-emerald-800,
+html.dark .text-emerald-700 {
+  color: #6ee7b7 !important;
+}
+
+html.dark .bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+  color: #fde68a !important;
+  border-color: rgba(245, 158, 11, 0.25) !important;
+}
+html.dark .text-amber-800,
+html.dark .text-amber-700 {
+  color: #fde68a !important;
 }
 
 /* Standard custom cards should look flat, deep indigo/navy blue */
@@ -197,14 +325,6 @@ html.dark .shadow-sm {
 html.dark a,
 html.dark button {
   transition: all 0.2s ease-in-out;
-}
-
-html.dark input,
-html.dark select,
-html.dark textarea {
-  background-color: #050a12 !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 /* Footer Overrides */
