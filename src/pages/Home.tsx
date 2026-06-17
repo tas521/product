@@ -120,6 +120,40 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
   const pilgrimagePackages = packages.filter(p => p.category === 'hajj' || p.category === 'umrah').slice(0, 3);
   const intlPackages = packages.filter(p => p.category === 'international').slice(0, 3);
 
+  // Custom refined transition motion presets
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 35 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { 
+        duration: 0.8, 
+        ease: [0.16, 1, 0.3, 1] 
+      } 
+    }
+  };
+
+  const staggerContainer = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.12
+      }
+    }
+  };
+
+  const staggerItem = {
+    hidden: { opacity: 0, y: 25 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.65,
+        ease: [0.16, 1, 0.3, 1]
+      }
+    }
+  };
+
   return (
     <div id="home-page-container" className="space-y-24 pb-12 w-full overflow-x-hidden">
       
@@ -248,13 +282,13 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
         </button>
 
         {/* Slides indicator nav dots */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2.5">
           {heroSlides.map((_, idx) => (
             <button
                key={idx}
                onClick={() => setCurrentSlide(idx)}
-               className={`w-2.5 h-2.5 rounded-full transition-all cursor-pointer ${
-                 currentSlide === idx ? 'w-8 bg-amber-500' : 'bg-white/35 hover:bg-white/60'
+               className={`h-2.5 rounded-sm transition-all duration-300 cursor-pointer ${
+                 currentSlide === idx ? 'w-10 bg-[#A37920]' : 'w-2.5 bg-white/40 hover:bg-white/70'
                }`}
                aria-label={`Go to slide ${idx + 1}`}
             />
@@ -263,7 +297,14 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
       </section>
 
       {/* 2. TRUST INDICATORS SECTION */}
-      <section id="trust-indicators" className="max-w-7xl mx-auto px-4 sm:px-6 pt-6">
+      <motion.section 
+        id="trust-indicators" 
+        className="max-w-7xl mx-auto px-4 sm:px-6 pt-6"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={sectionVariants}
+      >
         <div className="text-center max-w-2xl mx-auto space-y-4">
           <span className="text-amber-600 font-sans font-bold uppercase tracking-[0.35em] text-[10px] block">UNCOMPROMISING INTEGRITY</span>
           <h2 className="text-2xl sm:text-3.5xl font-serif font-light text-[#10223b] tracking-wide leading-tight">
@@ -279,11 +320,19 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-14">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-14"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
           {TRUST_INDICATORS.map((t, index) => (
-            <div
+            <motion.div
               key={t.id}
+              variants={staggerItem}
               className="bg-[#FAF8F5] p-8 rounded-none border border-amber-500/15 hover:border-amber-500/40 transition-all duration-500 relative group luxury-box"
+              whileHover={{ y: -5, transition: { duration: 0.3 } }}
             >
               <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-amber-500/15 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
               <div className="w-11 h-11 shrink-0 bg-amber-100/40 border border-amber-500/20 rounded-none flex items-center justify-center text-amber-600 mb-5">
@@ -293,13 +342,20 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
                 <h4 className="text-xs font-sans font-bold text-[#10223b] tracking-[0.15em] uppercase">{t.title}</h4>
                 <p className="text-xs text-[#10223b]/75 leading-relaxed">{t.description}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
       {/* 3. PREMIUM HAJJ & UMRAH TABBED EXVIEW */}
-      <section id="hajj-umrah-showcase" className="bg-[#F3ECE0]/20 border-y border-amber-500/15 py-24 islamic-pattern">
+      <motion.section 
+        id="hajj-umrah-showcase" 
+        className="bg-[#F3ECE0]/20 border-y border-amber-500/15 py-24 islamic-pattern"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={sectionVariants}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div className="space-y-3">
@@ -327,11 +383,19 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+          >
             {pilgrimagePackages.map((p) => (
-              <div
+              <motion.div
                 key={p.id}
+                variants={staggerItem}
                 className="bg-[#FAF8F5] rounded-none border border-amber-500/15 overflow-hidden flex flex-col hover:border-amber-500/40 transition-all duration-500 relative group shadow-xs luxury-box"
+                whileHover={{ y: -5, transition: { duration: 0.3 } }}
               >
                 {/* Image Holder */}
                 <div className="relative h-52 overflow-hidden bg-slate-900">
@@ -385,9 +449,9 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
                     </button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <div className="mt-14 text-center">
             <button
@@ -399,10 +463,17 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
             </button>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* 4. INTERNATIONAL TOURS SECTION */}
-      <section id="intl-tours-showcase" className="max-w-7xl mx-auto px-4 sm:px-6 pt-12">
+      <motion.section 
+        id="intl-tours-showcase" 
+        className="max-w-7xl mx-auto px-4 sm:px-6 pt-12"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={sectionVariants}
+      >
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-16">
           <div className="space-y-3">
             <span className="text-amber-600 font-sans font-bold uppercase tracking-[0.3em] text-[10px] block">LUXURY TOURISM</span>
@@ -422,11 +493,19 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
           {intlPackages.map((p) => (
-            <div
+            <motion.div
               key={p.id}
+              variants={staggerItem}
               className="group bg-[#FAF8F5] rounded-none border border-amber-500/15 overflow-hidden flex flex-col hover:border-amber-500/40 transition-all duration-500 relative group shadow-xs luxury-box"
+              whileHover={{ y: -5, transition: { duration: 0.3 } }}
             >
               <div className="relative h-64 overflow-hidden bg-slate-900">
                 <img
@@ -462,13 +541,20 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
                   Configure Holiday
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
       {/* 5. INTERACTIVE SELECT/GALLERY MASONRY VIEW */}
-      <section id="gallery-masonry" className="bg-[#10223b] text-white py-24 px-4 sm:px-6 relative overflow-hidden mt-6 border-y border-amber-500/25">
+      <motion.section 
+        id="gallery-masonry" 
+        className="bg-[#10223b] text-white py-24 px-4 sm:px-6 relative overflow-hidden mt-6 border-y border-amber-500/25"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={sectionVariants}
+      >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,#09121f,transparent_60%)]" />
         <div className="absolute inset-0 bg-image-pattern opacity-[0.03]" />
         
@@ -486,10 +572,17 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <motion.div 
+            className="grid grid-cols-2 md:grid-cols-4 gap-6"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+          >
             {(gallery && gallery.length > 0 ? gallery : GALLERY_ITEMS).slice(0, 4).map((img) => (
-              <div
+              <motion.div
                 key={img.id}
+                variants={staggerItem}
                 className="relative group h-72 rounded-none overflow-hidden bg-slate-900 cursor-pointer border border-amber-500/15"
                 onClick={() => setActivePage('gallery')}
               >
@@ -504,9 +597,9 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
                   <span className="text-[9px] text-amber-400 font-bold uppercase tracking-[0.1em]">{img.category}</span>
                   <h4 className="text-xs font-serif leading-snug mt-1 font-medium">{img.title}</h4>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <div className="text-center pb-2">
             <button
@@ -517,10 +610,17 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
             </button>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* 6. TESTIMONIALS SLIDER SECTION */}
-      <section id="customer-reviews" className="max-w-4xl mx-auto px-4 sm:px-6 relative pt-12">
+      <motion.section 
+        id="customer-reviews" 
+        className="max-w-4xl mx-auto px-4 sm:px-6 relative pt-12"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={sectionVariants}
+      >
         <div className="text-center space-y-3 mb-16">
           <span className="text-amber-700 font-sans font-bold uppercase tracking-[0.35em] text-[10px] block text-center">SINCERE GRATITUDE</span>
           <h2 className="text-2xl sm:text-3.5xl font-serif font-light text-[#10223b] text-center">Whispers of Devotion</h2>
@@ -583,10 +683,17 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
             </button>
           </div>
         </div>
-      </section>
+      </motion.section>
 
        {/* 7. PREPARATION BLOG/GUIDES SECTION */}
-      <section id="blog-teasers" className="bg-[#EAE6DF]/30 py-16 border-y border-slate-350/30">
+      <motion.section 
+        id="blog-teasers" 
+        className="bg-[#EAE6DF]/30 py-16 border-y border-slate-350/30"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={sectionVariants}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
           <div className="flex justify-between items-end">
             <div className="space-y-2">
@@ -603,10 +710,17 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+          >
             {(blogs && blogs.length > 0 ? blogs : BLOG_POSTS).map((blog) => (
-              <article
+              <motion.article
                 key={blog.id}
+                variants={staggerItem}
                 className="bg-white rounded-none border border-slate-200 overflow-hidden shadow-sm flex flex-col justify-between hover:border-[#1B365D]/30 transition"
               >
                 <div>
@@ -639,18 +753,34 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
-              </article>
+              </motion.article>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* 8. EMBEDDED DYNAMIC INQUIRY & DELHI LOCATION PREVIEW */}
-      <section id="on-ground-presence" className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="bg-transparent overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <motion.section 
+        id="on-ground-presence" 
+        className="max-w-7xl mx-auto px-4 sm:px-6"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={sectionVariants}
+      >
+        <motion.div 
+          className="bg-transparent overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-8"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
           
           {/* Form Side */}
-          <div className="p-8 sm:p-12 space-y-6 relative z-10 bg-white border border-slate-250/90 rounded-none shadow-xs text-slate-800">
+          <motion.div 
+            variants={staggerItem}
+            className="p-8 sm:p-12 space-y-6 relative z-10 bg-white border border-slate-250/90 rounded-none shadow-xs text-slate-800"
+          >
             <div className="space-y-2">
               <span className="text-amber-700 font-bold uppercase tracking-[0.4em] text-xs block">DIRECT ASSISTANCE DESK</span>
               <h2 className="text-3xl font-serif font-light text-[#1B365D] leading-tight">Ensure peace, secure clarity.</h2>
@@ -746,10 +876,13 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
                 ⚡ Chat Instant WhatsApp
               </a>
             </div>
-          </div>
+          </motion.div>
 
           {/* Delhi Map / Office Detail Side */}
-          <div className="p-8 sm:p-12 space-y-6 flex flex-col justify-between border border-slate-250 bg-[#EAE6DF]/30 relative text-slate-800 rounded-none shadow-xs">
+          <motion.div 
+            variants={staggerItem}
+            className="p-8 sm:p-12 space-y-6 flex flex-col justify-between border border-slate-250 bg-[#EAE6DF]/30 relative text-slate-800 rounded-none shadow-xs"
+          >
             
             <div className="space-y-4">
               <span className="text-amber-700 font-bold uppercase tracking-[0.4em] text-xs block">DELHI PRESENCE</span>
@@ -783,10 +916,10 @@ export default function Home({ onOpenBooking, onSelectPackage, setActivePage, pa
               </div>
             </div>
 
-          </div>
+          </motion.div>
 
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
     </div>
   );

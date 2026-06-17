@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ChevronsUp } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import BookingForm from './components/BookingForm';
@@ -20,10 +22,38 @@ import { isLiveFirebase, auth } from './lib/firebase';
 import { adminDb } from './lib/adminDb';
 
 export default function App() {
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    return localStorage.getItem('siteTheme') === 'dark';
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('siteTheme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('siteTheme', 'light');
+    }
+  }, [isDarkMode]);
+
   const [activePage, setActivePage] = useState<string>('home');
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [bookingFormType, setBookingFormType] = useState<'booking' | 'inquiry'>('booking');
+
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Dynamic systems synchronization
   const [packages, setPackages] = useState<Package[]>([]);
@@ -282,7 +312,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between font-sans selection:bg-slate-900 selection:text-slate-400 bg-[#F5F2ED] text-[#1B365D]">
+    <div className={`min-h-screen flex flex-col justify-between font-sans selection:bg-slate-900 selection:text-slate-400 transition-colors duration-300 ${isDarkMode ? 'bg-[#09121f] text-slate-100' : 'bg-[#F5F2ED] text-[#1B365D]'}`}>
       
       {/* Premium Sticky Transparent Navbar */}
       {activePage !== 'admin' && (
@@ -294,6 +324,8 @@ export default function App() {
           onOpenLogin={() => setActivePage('login')}
           onOpenDashboard={handleOpenActiveDashboard}
           onLogout={handleLogout}
+          isDarkMode={isDarkMode}
+          onToggleTheme={() => setIsDarkMode(!isDarkMode)}
         />
       )}
 
@@ -322,6 +354,29 @@ export default function App() {
 
       {/* Premium Islamic Editorial Footer */}
       {activePage !== 'admin' && <Footer setActivePage={setActivePage} />}
+
+      {/* Luxurious Golden Scroll To Top Floating Button */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            key="scroll-to-top"
+            initial={{ opacity: 0, y: 20, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 15, scale: 0.8 }}
+            onClick={scrollToTop}
+            className={`fixed bottom-6 right-6 z-50 w-11 h-11 flex items-center justify-center rounded-sm transition-all duration-300 border shadow-[0_10px_30px_-5px_rgba(163,121,32,0.3)] cursor-pointer ${
+              isDarkMode
+                ? 'border-amber-400 bg-[#09121f]/95 hover:bg-amber-500 hover:text-[#09121f] text-amber-400'
+                : 'border-amber-500 bg-white hover:bg-[#A37920] hover:text-white text-[#A37920]'
+            }`}
+            title="Scroll to top"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ChevronsUp className="w-5 h-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
     </div>
   );
