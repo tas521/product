@@ -56,7 +56,7 @@ import {
   ShieldAlert,
   FolderOpen,
   Upload,
-  Image
+  Image as ImageIcon
 } from 'lucide-react';
 import { isLiveFirebase, auth } from '../lib/firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
@@ -449,6 +449,42 @@ export default function AdminPortal({ setActivePage, currentUser, onLoginSuccess
           showToast("Photo selected, downscaled and optimized successfully!");
         } catch (err) {
           showToast("Failed to compress image.", "error");
+        }
+      } else {
+        showToast("Please select a valid image file content.", "error");
+      }
+    }
+  };
+
+  const handleBlogImageFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      if (file.type.startsWith('image/')) {
+        showToast("Processing, compressing and optimizing blog cover picture...", "info");
+        try {
+          const tinyBase64 = await compressImage(file);
+          setBlogImageUrl(tinyBase64);
+          showToast("Blog cover photo selected and optimized successfully!");
+        } catch (err) {
+          showToast("Failed to compress blog cover image.", "error");
+        }
+      } else {
+        showToast("Please select a valid image file content.", "error");
+      }
+    }
+  };
+
+  const handleGalleryImageFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      if (file.type.startsWith('image/')) {
+        showToast("Processing, compressing and optimizing gallery picture...", "info");
+        try {
+          const tinyBase64 = await compressImage(file, 1200, 1200, 0.7); // slightly higher resolution for gallery
+          setGalleryImageUrl(tinyBase64);
+          showToast("Gallery display picture selected and optimized successfully!");
+        } catch (err) {
+          showToast("Failed to compress gallery image.", "error");
         }
       } else {
         showToast("Please select a valid image file content.", "error");
@@ -1087,7 +1123,7 @@ export default function AdminPortal({ setActivePage, currentUser, onLoginSuccess
                 className={`w-full flex items-center justify-between px-3.5 py-3 text-xs font-bold tracking-wider uppercase transition cursor-pointer ${activeTab === 'gallery' ? 'bg-[#1B365D] text-white border-l-2 border-amber-500' : 'hover:bg-white/5 text-slate-400 hover:text-white'}`}
               >
                 <span className="flex items-center gap-2">
-                  <Image className="w-4 h-4" />
+                  <ImageIcon className="w-4 h-4" />
                   <span>Gallery & Media</span>
                 </span>
                 <span className="text-[10px] font-mono px-1.5 py-0.5 bg-amber-500/10 text-amber-500 rounded font-bold">{gallery.length}</span>
@@ -2661,28 +2697,94 @@ export default function AdminPortal({ setActivePage, currentUser, onLoginSuccess
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Cover Display Picture (Direct URL)</label>
-                  <input 
-                    type="url" 
-                    value={blogImageUrl}
-                    onChange={(e) => setBlogImageUrl(e.target.value)}
-                    placeholder="https://images.unsplash.com/photo-..."
-                    className={`w-full p-2.5 text-xs border rounded-none outline-none focus:border-amber-500 ${isAdminDark ? 'bg-slate-950 border-white/10 text-white' : 'bg-slate-50 border-slate-300 text-slate-800'}`}
-                  />
-                </div>
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Reading Time estimate</label>
+                <input 
+                  type="text" 
+                  value={blogReadTime}
+                  onChange={(e) => setBlogReadTime(e.target.value)}
+                  placeholder="e.g. 5 mins read"
+                  className={`w-full p-2.5 text-xs border rounded-none outline-none focus:border-amber-500 ${isAdminDark ? 'bg-slate-950 border-white/10 text-white' : 'bg-slate-50 border-slate-300 text-slate-800'}`}
+                />
+              </div>
 
-                <div className="space-y-1">
-                  <label className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Reading Time estimate</label>
+              <div className="space-y-1 border border-white/10 bg-slate-900/10 p-3.5 rounded-none">
+                <label className="text-[10px] uppercase font-bold tracking-wider text-amber-500 block pb-1">Cover Display Picture (URL or Upload)</label>
+                <div className="flex gap-2">
                   <input 
                     type="text" 
-                    value={blogReadTime}
-                    onChange={(e) => setBlogReadTime(e.target.value)}
-                    placeholder="e.g. 5 mins read"
-                    className={`w-full p-2.5 text-xs border rounded-none outline-none focus:border-amber-500 ${isAdminDark ? 'bg-slate-950 border-white/10 text-white' : 'bg-slate-50 border-slate-300 text-slate-800'}`}
+                    value={blogImageUrl}
+                    onChange={(e) => setBlogImageUrl(e.target.value)}
+                    placeholder="Paste online image URL or select from local storage folder..."
+                    className={`flex-1 p-2.5 text-xs border rounded-none outline-none focus:border-amber-500 ${isAdminDark ? 'bg-slate-950 border-white/10 text-white' : 'bg-slate-50 border-slate-300 text-slate-800'}`}
+                  />
+                  <label 
+                    htmlFor="blog-image-file"
+                    className="px-4 py-2.5 bg-[#1B365D] hover:bg-[#1B365D]/90 text-amber-400 hover:text-amber-300 border border-[#1B365D]/25 font-bold text-xs uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1.5 shrink-0"
+                  >
+                    <FolderOpen className="w-4 h-4" />
+                    <span>Open Folder</span>
+                  </label>
+                  <input 
+                    type="file" 
+                    id="blog-image-file" 
+                    accept="image/*" 
+                    className="hidden" 
+                    onChange={handleBlogImageFileUpload}
                   />
                 </div>
+                
+                {/* Styled Drag & Drop Zone */}
+                <div 
+                  onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                  onDrop={async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                      const file = e.dataTransfer.files[0];
+                      if (file.type.startsWith('image/')) {
+                        showToast("Processing, compressing and optimizing dropped image...", "info");
+                        try {
+                          const tinyBase64 = await compressImage(file);
+                          setBlogImageUrl(tinyBase64);
+                          showToast("Photo dropped and optimized successfully!");
+                        } catch (err) {
+                          showToast("Failed to process dropped image.", "error");
+                        }
+                      } else {
+                        showToast("Invalid file format. Drop image files only.", "error");
+                      }
+                    }
+                  }}
+                  className={`mt-2 p-3 border border-dashed text-center cursor-pointer flex flex-col items-center justify-center gap-1 transition ${
+                    isAdminDark 
+                      ? 'border-white/10 bg-slate-950/40 hover:bg-slate-950/80 text-slate-400' 
+                      : 'border-slate-300 bg-slate-50/50 hover:bg-slate-50 text-slate-500'
+                  }`}
+                >
+                  <Upload className="w-4 h-4 text-amber-500 hover:scale-110 transition" />
+                  <span className="text-[9px] font-bold tracking-wider uppercase">Or Drag & Drop Cover Photo Here</span>
+                  <span className="text-[8px] text-slate-500 font-mono">JPG, PNG, WEBP, GIF formats</span>
+                </div>
+
+                {blogImageUrl && (
+                  <div className="mt-2.5 flex items-center gap-3 bg-black/20 p-2 border border-white/5">
+                    <div className="w-16 h-12 bg-slate-800 overflow-hidden shrink-0 relative">
+                      <img referrerPolicy="no-referrer" src={blogImageUrl} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[10px] uppercase font-bold text-slate-400">Cover Preview</p>
+                      <p className="text-[9px] text-slate-500 truncate font-mono">{blogImageUrl.startsWith('data:') ? 'Local Base64 Data-URL' : blogImageUrl}</p>
+                    </div>
+                    <button 
+                      type="button" 
+                      onClick={() => setBlogImageUrl('')}
+                      className="px-2.5 py-1.5 bg-rose-950/40 hover:bg-rose-900 border border-rose-900/30 text-rose-400 text-[10px] font-bold uppercase transition"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div className="space-y-1">
@@ -2775,16 +2877,84 @@ export default function AdminPortal({ setActivePage, currentUser, onLoginSuccess
                 </select>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Display Picture (Direct Image URL)</label>
-                <input 
-                  type="url" 
-                  value={galleryImageUrl}
-                  onChange={(e) => setGalleryImageUrl(e.target.value)}
-                  placeholder="https://images.unsplash.com/photo-..."
-                  className={`w-full p-2.5 text-xs border rounded-none outline-none focus:border-amber-500 ${isAdminDark ? 'bg-slate-950 border-white/10 text-white' : 'bg-slate-50 border-slate-300 text-slate-800'}`}
-                  required
-                />
+              <div className="space-y-1 border border-white/10 bg-slate-900/10 p-3.5 rounded-none">
+                <label className="text-[10px] uppercase font-bold tracking-wider text-amber-500 block pb-1">Display Picture (URL or Upload)</label>
+                <div className="flex gap-2">
+                  <input 
+                    type="text" 
+                    value={galleryImageUrl}
+                    onChange={(e) => setGalleryImageUrl(e.target.value)}
+                    placeholder="Paste online image URL or select from local storage folder..."
+                    className={`flex-1 p-2.5 text-xs border rounded-none outline-none focus:border-amber-500 ${isAdminDark ? 'bg-slate-950 border-white/10 text-white' : 'bg-slate-50 border-slate-300 text-slate-800'}`}
+                    required
+                  />
+                  <label 
+                    htmlFor="gallery-image-file"
+                    className="px-4 py-2.5 bg-[#1B365D] hover:bg-[#1B365D]/90 text-amber-400 hover:text-amber-300 border border-[#1B365D]/25 font-bold text-xs uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1.5 shrink-0"
+                  >
+                    <FolderOpen className="w-4 h-4" />
+                    <span>Open Folder</span>
+                  </label>
+                  <input 
+                    type="file" 
+                    id="gallery-image-file" 
+                    accept="image/*" 
+                    className="hidden" 
+                    onChange={handleGalleryImageFileUpload}
+                  />
+                </div>
+                
+                {/* Styled Drag & Drop Zone */}
+                <div 
+                  onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                  onDrop={async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                      const file = e.dataTransfer.files[0];
+                      if (file.type.startsWith('image/')) {
+                        showToast("Processing, compressing and optimizing dropped image...", "info");
+                        try {
+                          const tinyBase64 = await compressImage(file, 1200, 1200, 0.7);
+                          setGalleryImageUrl(tinyBase64);
+                          showToast("Photo dropped and optimized successfully!");
+                        } catch (err) {
+                          showToast("Failed to process dropped image.", "error");
+                        }
+                      } else {
+                        showToast("Invalid file format. Drop image files only.", "error");
+                      }
+                    }
+                  }}
+                  className={`mt-2 p-3 border border-dashed text-center cursor-pointer flex flex-col items-center justify-center gap-1 transition ${
+                    isAdminDark 
+                      ? 'border-white/10 bg-slate-950/40 hover:bg-slate-950/80 text-slate-400' 
+                      : 'border-slate-300 bg-slate-50/50 hover:bg-slate-50 text-slate-500'
+                  }`}
+                >
+                  <Upload className="w-4 h-4 text-amber-500 hover:scale-110 transition" />
+                  <span className="text-[9px] font-bold tracking-wider uppercase">Or Drag & Drop Photo Here</span>
+                  <span className="text-[8px] text-slate-500 font-mono">JPG, PNG, WEBP, GIF formats</span>
+                </div>
+
+                {galleryImageUrl && (
+                  <div className="mt-2.5 flex items-center gap-3 bg-black/20 p-2 border border-white/5">
+                    <div className="w-16 h-12 bg-slate-800 overflow-hidden shrink-0 relative">
+                      <img referrerPolicy="no-referrer" src={galleryImageUrl} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[10px] uppercase font-bold text-slate-400">Photo Preview</p>
+                      <p className="text-[9px] text-slate-500 truncate font-mono">{galleryImageUrl.startsWith('data:') ? 'Local Base64 Data-URL' : galleryImageUrl}</p>
+                    </div>
+                    <button 
+                      type="button" 
+                      onClick={() => setGalleryImageUrl('')}
+                      className="px-2.5 py-1.5 bg-rose-950/40 hover:bg-rose-900 border border-rose-900/30 text-rose-400 text-[10px] font-bold uppercase transition"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div className="space-y-1">
